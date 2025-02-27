@@ -44,9 +44,25 @@ def add_expense():
     main()
 
 def delete_expense():
-    print("")
+    clear_terminal()
     view_transactions()
-    transaction_id = int(input("Enter the ID of the transaction to delete: "))
+    transaction_id = input("Enter the ID of the transaction to delete (type \"cancel\" to go back): ")
+
+    if transaction_id == "cancel":
+        main()
+
+    # check if ID is a number
+    if not transaction_id.isdigit():
+        print("Invalid ID. Please try again.")
+        time.sleep(1)
+        delete_expense()
+
+    # check if transaction exists
+    if not any(transaction["id"] == int(transaction_id) for transaction in view_transactions()):
+        print("Transaction not found. Please try again.")
+        time.sleep(1)
+        delete_expense()
+
     delete_transaction(transaction_id)
     print("Transaction deleted successfully!")
 

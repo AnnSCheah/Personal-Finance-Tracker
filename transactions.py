@@ -54,3 +54,5 @@ def view_transactions():
         print("Remark: {}".format(expense["remarks"]))
         print("")
 
+    return transactions
+
