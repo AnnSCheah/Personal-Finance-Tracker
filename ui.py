@@ -1,24 +1,28 @@
 import time
-from transactions import add_transaction
+import os
+from transactions import add_transaction, view_transactions, delete_transaction
+
+def clear_terminal():
+    os.system('cls' if os.name == 'nt' else 'clear')
 
 def main():
+    clear_terminal()
     print("Welcome to the Budget App!")
     print("What would you like to do?")
-    print("1. Add an expense")
-    print("2. View expenses")
-    print("3. Exit")
+    for choice, function in choices.items():
+        print(f"{list(choices.keys()).index(choice) + 1}. {choice}")
+
     user_choice = input("Enter your choice: ")
-    if user_choice == "1":
-        add_expense()
-    elif user_choice == "2":
-        # view_expenses()
-        print("View expenses")
-    elif user_choice == "3" or user_choice == "exit":
+
+    if user_choice.lower() == "exit":
         exit()
-    else:
-        print("Invalid choice. Please try again.\n")
+
+    if not user_choice.isdigit() or int(user_choice) > len(choices) or int(user_choice) < 1:
+        print("Invalid choice. Please try again.")
         time.sleep(0.5)
         main()
+
+    choices[list(choices.keys())[int(user_choice) - 1]]()
 
 def add_expense():
     amount = f"{float(input("Enter the expense: $")):.2f}"
@@ -36,8 +40,33 @@ def add_expense():
     print("Remark: {}".format(remark))
     print("")
 
-    time.sleep(0.5)
+    input("Press Enter to continue...")
     main()
+
+def delete_expense():
+    print("")
+    view_transactions()
+    transaction_id = int(input("Enter the ID of the transaction to delete: "))
+    delete_transaction(transaction_id)
+    print("Transaction deleted successfully!")
+
+    time.sleep(1)
+    main()
+
+def view_expenses():
+    clear_terminal()
+    view_transactions()
+
+    input("Press Enter to continue...")
+    main()
+
+choices = {
+    "Add an expense": add_expense,
+    "Delete an expense": delete_expense,
+    "View expenses": view_expenses,
+    "Exit": exit
+}
+
 
 
 main()

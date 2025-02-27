@@ -1,0 +1,30 @@
+[
+    {
+        "id": 2,
+        "date": "27/02/2025",
+        "amount": "472.67",
+        "category": "Food",
+        "remarks": "family dinner at picanhas"
+    },
+    {
+        "id": 3,
+        "date": "27/02/2025",
+        "amount": "7.80",
+        "category": "Food",
+        "remarks": "fishball noodles + iced tea"
+    },
+    {
+        "id": 4,
+        "date": "27/02/2025",
+        "amount": "24.50",
+        "category": "Food",
+        "remarks": "Food"
+    },
+    {
+        "id": 5,
+        "date": "27/02/2025",
+        "amount": "589.90",
+        "category": "Bills",
+        "remarks": "Macbook Installment #3"
+    }
+]
