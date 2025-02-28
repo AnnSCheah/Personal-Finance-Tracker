@@ -7,13 +7,15 @@ class MenuManager:
         self.main_menu = {}
         self.transaction_menu = {}
         self.reports_menu = {}
+        self.categories_menu = {}
 
     def initialize_menus(self, handlers):
         """Initialize menu configurations with function references."""
         self.main_menu.update({
             "1": ("Manage Transactions", handlers.manage_transactions),
             "2": ("View Reports", handlers.view_reports),
-            "3": ("Exit", handlers.exit_app)
+            "3": ("Manage Categories", handlers.manage_categories),
+            "4": ("Exit", handlers.exit_app)
         })
 
         self.transaction_menu.update({
@@ -34,9 +36,17 @@ class MenuManager:
             "5": ("Go Back", handlers.main)
         })
 
+        self.categories_menu.update({
+            "1": ("Add Category", "placeholder"),
+            "2": ("Edit Category", "placeholder"),
+            "3": ("Delete Category", "placeholder"),
+            "4": ("Go Back", handlers.main)
+        })
+
     def display_menu(self, title, menu_items):
         """Display a menu with the given title and items."""
         print(f"\n{title}")
+        print("-----------------")
         for key, (label, _) in menu_items.items():
             print(f"{key}. {label}")
 

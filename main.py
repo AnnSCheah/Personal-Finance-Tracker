@@ -41,6 +41,15 @@ class BudgetApp:
         choice = input("\nEnter your choice: ")
         self.menu.handle_menu_choice(self.menu.reports_menu, choice, self.view_reports)
 
+    def manage_categories(self):
+        """Category management menu."""
+        self.display.clear()
+
+        self.menu.display_menu("Manage Categories", self.menu.categories_menu)
+
+        choice = input("\nEnter your choice: ")
+        self.menu.handle_menu_choice(self.menu.categories_menu, choice, self.manage_categories)
+
     def add_expense(self):
         """Add an expense transaction."""
         return self.transaction_ui.add_transaction_ui("expense")
