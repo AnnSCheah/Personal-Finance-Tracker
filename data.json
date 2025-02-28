@@ -1,24 +1,17 @@
 [
     {
         "id": 2,
-        "date": "27/02/2025",
-        "amount": "472.67",
-        "category": "Food",
-        "remarks": "family dinner at picanhas"
-    },
-    {
-        "id": 3,
-        "date": "27/02/2025",
-        "amount": "7.80",
-        "category": "Food",
-        "remarks": "fishball noodles + iced tea"
+        "date": "Food",
+        "amount": "460.52",
+        "category": "26/02/2025",
+        "remarks": "Family dinner at Stellas"
     },
     {
         "id": 4,
         "date": "27/02/2025",
         "amount": "24.50",
         "category": "Food",
-        "remarks": "Food"
+        "remarks": "Lunch at a magical place"
     },
     {
         "id": 5,
@@ -26,5 +19,21 @@
         "amount": "589.90",
         "category": "Bills",
         "remarks": "Macbook Installment #3"
+    },
+    {
+        "id": 6,
+        "date": "Salary",
+        "amount": "7500.00",
+        "category": "07/02/2025",
+        "remarks": "",
+        "type": "income"
+    },
+    {
+        "id": 7,
+        "date": "28/02/2025",
+        "amount": "12.40",
+        "category": "Food",
+        "remarks": "lunch at hawker",
+        "type": "expense"
     }
 ]
