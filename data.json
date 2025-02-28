@@ -1,40 +1,18 @@
 [
     {
-        "id": 4,
-        "date": "27/02/2025",
-        "amount": "24.50",
-        "category": "Food",
-        "remarks": "Lunch at a magical place"
-    },
-    {
-        "id": 5,
-        "date": "27/02/2025",
-        "amount": "598.90",
-        "category": "Bills",
-        "remarks": "Macbook Installment #3"
-    },
-    {
-        "id": 6,
-        "date": "Salary",
-        "amount": "14500.00",
-        "category": "07/02/2025",
+        "id": 1,
+        "date": "07/02/2025",
+        "amount": "6500.00",
+        "category": "Salary",
         "remarks": "",
         "type": "income"
     },
     {
-        "id": 7,
+        "id": 2,
         "date": "28/02/2025",
         "amount": "12.40",
-        "category": "Food",
+        "category": "Food & Dining",
         "remarks": "lunch at hawker",
-        "type": "expense"
-    },
-    {
-        "id": 8,
-        "date": "28/02/2025",
-        "amount": "482.50",
-        "category": "Food",
-        "remarks": "family dinner",
         "type": "expense"
     }
 ]

@@ -16,22 +16,28 @@ class BudgetApp:
         """Main menu of the application."""
         self.display.clear()
         print("Welcome to the Budget App!")
+
         display_financial_summary()
         self.menu.display_menu("Main Menu:", self.menu.main_menu)
+
         choice = input("\nEnter your choice: ")
         self.menu.handle_menu_choice(self.menu.main_menu, choice, self.main)
 
     def manage_transactions(self):
         """Transaction management menu."""
         self.display.clear()
+
         self.menu.display_menu("Manage Transactions", self.menu.transaction_menu)
+
         choice = input("\nEnter your choice: ")
         self.menu.handle_menu_choice(self.menu.transaction_menu, choice, self.manage_transactions)
 
     def view_reports(self):
         """Reports menu."""
         self.display.clear()
+
         self.menu.display_menu("View Reports", self.menu.reports_menu)
+
         choice = input("\nEnter your choice: ")
         self.menu.handle_menu_choice(self.menu.reports_menu, choice, self.view_reports)
 
@@ -59,19 +65,23 @@ class BudgetApp:
         """Delete an income transaction."""
         return self.transaction_ui.delete_transaction_ui("income")
 
-    def view_expenses_ui(self):
-        """View all expenses."""
+    def view_transactions(self, transaction_type):
+        """Generic view method for transactions."""
         self.display.clear()
-        view_expenses()
+        if transaction_type == "expense":
+            view_expenses()
+        else:
+            view_income()
         input("\nPress Enter to continue...")
         return self.view_reports()
 
+    def view_expenses_ui(self):
+        """View all expenses."""
+        return self.view_transactions("expense")
+
     def view_income_ui(self):
         """View all income."""
-        self.display.clear()
-        view_income()
-        input("\nPress Enter to continue...")
-        return self.view_reports()
+        return self.view_transactions("income")
 
     def view_balance(self):
         """View financial summary."""

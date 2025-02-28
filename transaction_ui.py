@@ -2,6 +2,7 @@
 
 import time
 from transactions import add_transaction, update_transaction, delete_transaction, load_transactions, delete_all_transactions
+from categories import EXPENSE_CATEGORIES, INCOME_CATEGORIES
 
 class TransactionUI:
     def __init__(self, display_manager):
@@ -11,7 +12,7 @@ class TransactionUI:
         """Handle UI for adding a transaction."""
         amount = f"{float(input(f'Enter the {transaction_type}: $')):.2f}"
         date = input("Enter the date (DD/MM/YYYY): ")
-        category = input("Enter the category: ")
+        category = self.get_category(transaction_type)
         remark = input("Enter a remark (optional): ")
 
         add_transaction(date, amount, category, remark, transaction_type=transaction_type)
@@ -186,3 +187,20 @@ class TransactionUI:
             time.sleep(1)
             return False
         return True
+
+    def get_category(self, transaction_type):
+        """Get category from predefined list."""
+        categories = EXPENSE_CATEGORIES if transaction_type == "expense" else INCOME_CATEGORIES
+
+        print(f"\nAvailable {transaction_type} categories:")
+        for idx, category in enumerate(categories, 1):
+            print(f"{idx}. {category}")
+
+        while True:
+            try:
+                choice = int(input("\nSelect category number: "))
+                if 1 <= choice <= len(categories):
+                    return categories[choice - 1]
+                print("Invalid selection. Please try again.")
+            except ValueError:
+                print("Please enter a valid number.")
