@@ -30,7 +30,8 @@ class MenuManager:
             "1": ("View All Expenses", handlers.view_expenses_ui),
             "2": ("View All Income", handlers.view_income_ui),
             "3": ("View Financial Summary", handlers.view_balance),
-            "4": ("Go Back", handlers.main)
+            "4": ("Delete All Transactions", handlers.delete_all_transactions),
+            "5": ("Go Back", handlers.main)
         })
 
     def display_menu(self, title, menu_items):
@@ -42,7 +43,7 @@ class MenuManager:
     def handle_menu_choice(self, menu_items, choice, return_to):
         """Handle user's menu choice."""
         if choice == "exit":
-            return menu_items["3"][1]()  # Call exit function
+            return self.main_menu["3"][1]()
 
         if not choice.isdigit() or choice not in menu_items:
             print("Invalid choice. Please try again.")

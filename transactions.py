@@ -44,9 +44,18 @@ def delete_transaction(transaction_id):
             break
     save_transactions(transactions)
 
+def delete_all_transactions():
+    transactions = []
+    save_transactions(transactions)
+
 # view transactions of specified type
 def view_filtered_transactions(transaction_type="expense"):
     transactions = load_transactions()
+
+    if not transactions:
+        print(f"No {transaction_type} transactions found.")
+        return []
+
     filtered_transactions = [t for t in transactions if t.get('type', 'expense') == transaction_type]
     for transaction in filtered_transactions:
         print(f"ID: {transaction['id']}")

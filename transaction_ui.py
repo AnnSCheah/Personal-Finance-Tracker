@@ -1,7 +1,7 @@
 """Module for handling transaction-related UI operations."""
 
 import time
-from transactions import add_transaction, update_transaction, delete_transaction, load_transactions
+from transactions import add_transaction, update_transaction, delete_transaction, load_transactions, delete_all_transactions
 
 class TransactionUI:
     def __init__(self, display_manager):
@@ -107,6 +107,38 @@ class TransactionUI:
         print(f"\n{transaction_type.capitalize()} deleted successfully!")
         time.sleep(1)
         return "manage_transactions"
+
+    def delete_all_transactions(self):
+        """Handle UI for deleting all transactions."""
+        confirm = input("Are you sure you want to delete all transactions? (yes/no): ").lower()
+        if confirm not in ["yes", "y"]:
+            print("")
+            print("Deletion cancelled.")
+            time.sleep(1)
+            return "manage_transactions"
+
+        print("")
+        print("This will delete all transactions from the database, and it cannot be undone.")
+        absolute_confirm = input("Are you ABSOLUTELY sure you want to delete all transactions? (yes/no): ").lower()
+
+        if absolute_confirm not in ["yes", "y"]:
+            print("")
+            print("Deletion cancelled.")
+            time.sleep(1)
+            return "manage_transactions"
+
+        print("")
+        print("Deleting all transactions...")
+        time.sleep(2)
+
+        delete_all_transactions()
+        print("")
+        print("All transactions have been deleted.")
+        time.sleep(1)
+
+        return "manage_transactions"
+
+
 
     def _validate_transaction_id(self, transaction_id, transactions, transaction_type):
         """Validate transaction ID input."""

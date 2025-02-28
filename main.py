@@ -80,6 +80,10 @@ class BudgetApp:
         input("\nPress Enter to continue...")
         return self.view_reports()
 
+    def delete_all_transactions(self):
+        """Delete all transactions."""
+        return self.transaction_ui.delete_all_transactions()
+
     def exit_app(self):
         """Exit the application."""
         self.display.clear()
