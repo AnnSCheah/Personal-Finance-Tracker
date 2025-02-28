@@ -50,4 +50,12 @@ class MenuManager:
             return return_to()
 
         _, function = menu_items[choice]
-        return function()
+        result = function()
+
+        # Handle menu transitions
+        if result == "manage_transactions":
+            return return_to()  # Return to the previous menu (manage transactions)
+        elif result == "main":
+            return self.main_menu["1"][1]()  # Return to main menu
+
+        return result

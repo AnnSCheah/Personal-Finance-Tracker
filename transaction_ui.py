@@ -21,7 +21,7 @@ class TransactionUI:
         self.display.show_transaction_details(amount, date, category, remark)
 
         input("\nPress Enter to continue...")
-        return "main"
+        return "manage_transactions"
 
     def edit_transaction_ui(self, transaction_type="expense"):
         """Handle UI for editing a transaction."""
@@ -30,12 +30,12 @@ class TransactionUI:
 
         if not transactions_exist:
             input("\nPress Enter to continue...")
-            return "main"
+            return "manage_transactions"
 
         transaction_id = input(f"Enter the ID of the {transaction_type} to edit (type \"cancel\" to go back): ")
 
         if transaction_id == "cancel":
-            return "main"
+            return "manage_transactions"
 
         if not self._validate_transaction_id(transaction_id, transactions, transaction_type):
             return self.edit_transaction_ui(transaction_type)
@@ -48,7 +48,7 @@ class TransactionUI:
         detail_choice = input("Which detail would you like to edit? (1-5): ")
 
         if detail_choice == "5":
-            return "main"
+            return "manage_transactions"
 
         if not detail_choice.isdigit() or int(detail_choice) < 1 or int(detail_choice) > 5:
             print("Invalid choice. Please try again.")
@@ -59,8 +59,16 @@ class TransactionUI:
         update_transaction(transaction_id, **updated_values)
 
         print(f"\n{transaction_type.capitalize()} updated successfully!")
+        details = {
+            'amount': updated_values['amount'],
+            'date': updated_values['date'],
+            'category': updated_values['category'],
+            'remarks': updated_values['remarks']
+        }
+        self.display.show_transaction_details(**details)
+
         input("\nPress Enter to continue...")
-        return "main"
+        return "manage_transactions"
 
     def delete_transaction_ui(self, transaction_type="expense"):
         """Handle UI for deleting a transaction."""
@@ -69,12 +77,12 @@ class TransactionUI:
 
         if not transactions_exist:
             input("\nPress Enter to continue...")
-            return "main"
+            return "manage_transactions"
 
         transaction_id = input(f"Enter the ID of the {transaction_type} to delete (type \"cancel\" to go back): ")
 
         if transaction_id == "cancel":
-            return "main"
+            return "manage_transactions"
 
         if not self._validate_transaction_id(transaction_id, transactions, transaction_type):
             return self.delete_transaction_ui(transaction_type)
@@ -84,15 +92,21 @@ class TransactionUI:
 
         self.display.clear()
         print(f"You are about to delete this {transaction_type}:")
-        self.display.show_transaction_details(**transaction)
+        details = {
+            'amount': transaction['amount'],
+            'date': transaction['date'],
+            'category': transaction['category'],
+            'remarks': transaction['remarks']
+        }
+        self.display.show_transaction_details(**details)
 
         if not self._confirm_deletion(transaction_type):
-            return "main"
+            return "manage_transactions"
 
         delete_transaction(transaction_id)
         print(f"\n{transaction_type.capitalize()} deleted successfully!")
         time.sleep(1)
-        return "main"
+        return "manage_transactions"
 
     def _validate_transaction_id(self, transaction_id, transactions, transaction_type):
         """Validate transaction ID input."""

@@ -21,7 +21,14 @@ class DisplayManager:
             if transaction.get("type", "expense") == transaction_type:
                 transactions_exist = True
                 print(f"ID: {transaction['id']}")
-                self.show_transaction_details(**transaction)
+                # Extract only the required fields for show_transaction_details
+                details = {
+                    'amount': transaction['amount'],
+                    'date': transaction['date'],
+                    'category': transaction['category'],
+                    'remarks': transaction['remarks']
+                }
+                self.show_transaction_details(**details)
                 print("")
 
         if not transactions_exist:
