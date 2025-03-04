@@ -3,6 +3,7 @@
 from menu_manager import MenuManager
 from display_manager import DisplayManager
 from transaction_ui import TransactionUI
+from category_ui import CategoryUI
 from reports import display_financial_summary, view_expenses, view_income
 
 class BudgetApp:
@@ -10,6 +11,7 @@ class BudgetApp:
         self.display = DisplayManager()
         self.menu = MenuManager()
         self.transaction_ui = TransactionUI(self.display)
+        self.category_ui = CategoryUI(self.display)
         self.menu.initialize_menus(self)
 
     def main(self):
@@ -102,6 +104,14 @@ class BudgetApp:
     def delete_all_transactions(self):
         """Delete all transactions."""
         return self.transaction_ui.delete_all_transactions()
+
+    def add_category(self):
+        """Add a category."""
+        return self.category_ui.add_category_ui("expense")
+
+    def edit_category(self):
+        """Edit a category."""
+        return self.category_ui.edit_category_ui("expense")
 
     def exit_app(self):
         """Exit the application."""

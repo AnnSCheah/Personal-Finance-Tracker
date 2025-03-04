@@ -46,3 +46,12 @@ class DisplayManager:
         print(f"4. Remark: {transaction['remarks']}")
         print("5. Go back")
         print("")
+
+    def show_category_menu(self, categories):
+        """Display the category menu for a transaction."""
+        count = 1
+        for index, category in enumerate(categories, start=1):
+            print(f"{index}. {category}")
+            count += 1
+        print(f"{count}. Go back")
+        print("")

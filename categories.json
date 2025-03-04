@@ -1,0 +1,16 @@
+{
+    "expense": [
+        "Food & Dining",
+        "Transportation",
+        "Shopping",
+        "Housing & Utilities",
+        "Insurance",
+        "Others"
+    ],
+    "income": [
+        "Salary",
+        "Investment",
+        "Gifts",
+        "Others"
+    ]
+}

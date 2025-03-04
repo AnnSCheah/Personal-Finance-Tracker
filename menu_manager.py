@@ -8,9 +8,12 @@ class MenuManager:
         self.transaction_menu = {}
         self.reports_menu = {}
         self.categories_menu = {}
+        self.exit_handler = None
 
     def initialize_menus(self, handlers):
         """Initialize menu configurations with function references."""
+        self.exit_handler = handlers.exit_app
+
         self.main_menu.update({
             "1": ("Manage Transactions", handlers.manage_transactions),
             "2": ("View Reports", handlers.view_reports),
@@ -37,8 +40,8 @@ class MenuManager:
         })
 
         self.categories_menu.update({
-            "1": ("Add Category", "placeholder"),
-            "2": ("Edit Category", "placeholder"),
+            "1": ("Add Category", handlers.add_category),
+            "2": ("Edit Category", handlers.edit_category),
             "3": ("Delete Category", "placeholder"),
             "4": ("Go Back", handlers.main)
         })
@@ -53,7 +56,7 @@ class MenuManager:
     def handle_menu_choice(self, menu_items, choice, return_to):
         """Handle user's menu choice."""
         if choice == "exit":
-            return self.main_menu["3"][1]()
+            return self.exit_handler()
 
         if not choice.isdigit() or choice not in menu_items:
             print("Invalid choice. Please try again.")
@@ -64,7 +67,7 @@ class MenuManager:
         result = function()
 
         # Handle menu transitions
-        if result == "manage_transactions":
+        if result in ["manage_transactions", "manage_categories"]:
             return return_to()  # Return to the previous menu (manage transactions)
         elif result == "main":
             return self.main_menu["1"][1]()  # Return to main menu

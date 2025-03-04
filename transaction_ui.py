@@ -1,18 +1,19 @@
 """Module for handling transaction-related UI operations."""
 
 import time
+from category_ui import CategoryUI
 from transactions import add_transaction, update_transaction, delete_transaction, load_transactions, delete_all_transactions
-from categories import EXPENSE_CATEGORIES, INCOME_CATEGORIES
 
 class TransactionUI:
     def __init__(self, display_manager):
         self.display = display_manager
+        self.categories = CategoryUI(display_manager)
 
     def add_transaction_ui(self, transaction_type="expense"):
         """Handle UI for adding a transaction."""
         amount = f"{float(input(f'Enter the {transaction_type}: $')):.2f}"
         date = input("Enter the date (DD/MM/YYYY): ")
-        category = self.get_category(transaction_type)
+        category = self._get_categories(transaction_type)
         remark = input("Enter a remark (optional): ")
 
         add_transaction(date, amount, category, remark, transaction_type=transaction_type)
@@ -42,7 +43,7 @@ class TransactionUI:
             return self.edit_transaction_ui(transaction_type)
 
         transaction = next(t for t in transactions
-                         if t["id"] == int(transaction_id) and t.get("type", "expense") == transaction_type)
+                        if t["id"] == int(transaction_id) and t.get("type", "expense") == transaction_type)
 
         self.display.clear()
         self.display.show_edit_menu(transaction, transaction_type)
@@ -89,7 +90,7 @@ class TransactionUI:
             return self.delete_transaction_ui(transaction_type)
 
         transaction = next(t for t in transactions
-                         if t["id"] == int(transaction_id) and t.get("type", "expense") == transaction_type)
+                        if t["id"] == int(transaction_id) and t.get("type", "expense") == transaction_type)
 
         self.display.clear()
         print(f"You are about to delete this {transaction_type}:")
@@ -139,8 +140,6 @@ class TransactionUI:
 
         return "manage_transactions"
 
-
-
     def _validate_transaction_id(self, transaction_id, transactions, transaction_type):
         """Validate transaction ID input."""
         if not transaction_id.isdigit():
@@ -149,8 +148,8 @@ class TransactionUI:
             return False
 
         transaction_exists = any(t["id"] == int(transaction_id) and
-                               t.get("type", "expense") == transaction_type
-                               for t in transactions)
+                            t.get("type", "expense") == transaction_type
+                            for t in transactions)
 
         if not transaction_exists:
             print(f"{transaction_type.capitalize()} transaction not found. Please try again.")
@@ -188,19 +187,18 @@ class TransactionUI:
             return False
         return True
 
-    def get_category(self, transaction_type):
-        """Get category from predefined list."""
-        categories = EXPENSE_CATEGORIES if transaction_type == "expense" else INCOME_CATEGORIES
+    def _get_categories(self, transaction_type):
+        """Get the appropriate categories for the transaction type."""
+        categories = self.categories.get_category_list(transaction_type)
+        for index, category in enumerate(categories, start=1):
+            print(f"{index}. {category}")
 
-        print(f"\nAvailable {transaction_type} categories:")
-        for idx, category in enumerate(categories, 1):
-            print(f"{idx}. {category}")
+        category_choice = input(f"Choose a category (1-{len(categories)}): ")
 
-        while True:
-            try:
-                choice = int(input("\nSelect category number: "))
-                if 1 <= choice <= len(categories):
-                    return categories[choice - 1]
-                print("Invalid selection. Please try again.")
-            except ValueError:
-                print("Please enter a valid number.")
+        # Input validation
+        if not category_choice.isdigit() or int(category_choice) < 1 or int(category_choice) > len(categories):
+            print("Invalid choice. Please try again.")
+            time.sleep(1)
+            return self._get_categories(transaction_type)
+
+        return categories[int(category_choice) - 1]
