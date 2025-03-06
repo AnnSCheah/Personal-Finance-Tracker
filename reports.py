@@ -2,14 +2,6 @@
 
 from transactions import get_total, view_filtered_transactions
 
-def view_expenses():
-    """Display all expense transactions."""
-    view_filtered_transactions("expense")
-
-def view_income():
-    """Display all income transactions."""
-    view_filtered_transactions("income")
-
 def get_financial_summary():
     """Calculate and return financial summary data."""
     income = float(get_total("income"))

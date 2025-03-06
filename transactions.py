@@ -1,7 +1,6 @@
 import os
 import json
-
-DATA_FILE = 'data.json'
+from settings import DATA_FILE
 
 # load all transactions from file
 def load_transactions():

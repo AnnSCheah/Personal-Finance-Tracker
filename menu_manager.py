@@ -22,28 +22,31 @@ class MenuManager:
         })
 
         self.transaction_menu.update({
-            "1": ("Add Expense", handlers.add_expense),
-            "2": ("Add Income", handlers.add_income),
-            "3": ("Edit Expense", handlers.edit_expense),
-            "4": ("Edit Income", handlers.edit_income),
-            "5": ("Delete Expense", handlers.delete_expense),
-            "6": ("Delete Income", handlers.delete_income),
+            "1": ("Add Expense", lambda:handlers.add_transaction("expense")),
+            "2": ("Add Income", lambda:handlers.add_transaction("income")),
+            "3": ("Edit Expense", lambda:handlers.edit_transaction("expense")),
+            "4": ("Edit Income", lambda:handlers.edit_transaction("income")),
+            "5": ("Delete Expense", lambda:handlers.delete_transaction("expense")),
+            "6": ("Delete Income", lambda:handlers.delete_transaction("income")),
             "7": ("Go Back", handlers.main)
         })
 
         self.reports_menu.update({
-            "1": ("View All Expenses", handlers.view_expenses_ui),
-            "2": ("View All Income", handlers.view_income_ui),
+            "1": ("View All Expenses", lambda:handlers.view_transactions("expense")),
+            "2": ("View All Income", lambda:handlers.view_transactions("income")),
             "3": ("View Financial Summary", handlers.view_balance),
             "4": ("Delete All Transactions", handlers.delete_all_transactions),
             "5": ("Go Back", handlers.main)
         })
 
         self.categories_menu.update({
-            "1": ("Add Category", handlers.add_category),
-            "2": ("Edit Category", handlers.edit_category),
-            "3": ("Delete Category", "placeholder"),
-            "4": ("Go Back", handlers.main)
+            "1": ("Add Expense Category", lambda:handlers.add_category("expense")),
+            "2": ("Add Income Category", lambda:handlers.add_category("income")),
+            "3": ("Edit Expense Category", lambda:handlers.edit_category("expense")),
+            "4": ("Edit Income Category", lambda:handlers.edit_category("income")),
+            "5": ("Delete Expense Category", lambda:handlers.delete_category("expense")),
+            "6": ("Delete Income Category", lambda:handlers.delete_category("income")),
+            "7": ("Go Back", handlers.main)
         })
 
     def display_menu(self, title, menu_items):

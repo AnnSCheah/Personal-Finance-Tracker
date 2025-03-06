@@ -4,7 +4,8 @@ from menu_manager import MenuManager
 from display_manager import DisplayManager
 from transaction_ui import TransactionUI
 from category_ui import CategoryUI
-from reports import display_financial_summary, view_expenses, view_income
+from reports import display_financial_summary
+from transactions import view_filtered_transactions
 
 class BudgetApp:
     def __init__(self):
@@ -52,47 +53,25 @@ class BudgetApp:
         choice = input("\nEnter your choice: ")
         self.menu.handle_menu_choice(self.menu.categories_menu, choice, self.manage_categories)
 
-    def add_expense(self):
+    def add_transaction(self, transaction_type):
         """Add an expense transaction."""
-        return self.transaction_ui.add_transaction_ui("expense")
+        return self.transaction_ui.add_transaction_ui(transaction_type)
 
-    def add_income(self):
-        """Add an income transaction."""
-        return self.transaction_ui.add_transaction_ui("income")
-
-    def edit_expense(self):
+    def edit_transaction(self, transaction_type):
         """Edit an expense transaction."""
-        return self.transaction_ui.edit_transaction_ui("expense")
+        return self.transaction_ui.edit_transaction_ui(transaction_type)
 
-    def edit_income(self):
-        """Edit an income transaction."""
-        return self.transaction_ui.edit_transaction_ui("income")
-
-    def delete_expense(self):
+    def delete_transaction(self, transaction_type):
         """Delete an expense transaction."""
-        return self.transaction_ui.delete_transaction_ui("expense")
-
-    def delete_income(self):
-        """Delete an income transaction."""
-        return self.transaction_ui.delete_transaction_ui("income")
+        return self.transaction_ui.delete_transaction_ui(transaction_type)
 
     def view_transactions(self, transaction_type):
         """Generic view method for transactions."""
         self.display.clear()
-        if transaction_type == "expense":
-            view_expenses()
-        else:
-            view_income()
+        view_filtered_transactions("expense") if transaction_type == "expense" else view_filtered_transactions("income")
+
         input("\nPress Enter to continue...")
         return self.view_reports()
-
-    def view_expenses_ui(self):
-        """View all expenses."""
-        return self.view_transactions("expense")
-
-    def view_income_ui(self):
-        """View all income."""
-        return self.view_transactions("income")
 
     def view_balance(self):
         """View financial summary."""
@@ -105,13 +84,17 @@ class BudgetApp:
         """Delete all transactions."""
         return self.transaction_ui.delete_all_transactions()
 
-    def add_category(self):
+    def add_category(self, transaction_type):
         """Add a category."""
-        return self.category_ui.add_category_ui("expense")
+        return self.category_ui.add_category_ui(transaction_type)
 
-    def edit_category(self):
+    def edit_category(self, transaction_type):
         """Edit a category."""
-        return self.category_ui.edit_category_ui("expense")
+        return self.category_ui.edit_category_ui(transaction_type)
+
+    def delete_category(self, transaction_type):
+        """Delete a category."""
+        return self.category_ui.delete_category_ui(transaction_type)
 
     def exit_app(self):
         """Exit the application."""

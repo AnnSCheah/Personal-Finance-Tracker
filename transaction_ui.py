@@ -1,6 +1,7 @@
 """Module for handling transaction-related UI operations."""
 
 import time
+from settings import IDLE_TIME
 from category_ui import CategoryUI
 from transactions import add_transaction, update_transaction, delete_transaction, load_transactions, delete_all_transactions
 
@@ -11,8 +12,13 @@ class TransactionUI:
 
     def add_transaction_ui(self, transaction_type="expense"):
         """Handle UI for adding a transaction."""
-        amount = f"{float(input(f'Enter the {transaction_type}: $')):.2f}"
-        date = input("Enter the date (DD/MM/YYYY): ")
+        print(f"Add {transaction_type.capitalize()}")
+        print("----------------------")
+        amount = self._validate_expense_amount()
+        if amount is None:
+            return "manage_transactions"
+
+        date = input("Enter the date (DD/MM/YYYY): ") # TODO: Find a better way to validate date.
         category = self._get_categories(transaction_type)
         remark = input("Enter a remark (optional): ")
 
@@ -39,9 +45,11 @@ class TransactionUI:
         if transaction_id == "cancel":
             return "manage_transactions"
 
+        # Check if the transaction ID is valid
         if not self._validate_transaction_id(transaction_id, transactions, transaction_type):
             return self.edit_transaction_ui(transaction_type)
 
+        # Get the transaction to edit
         transaction = next(t for t in transactions
                         if t["id"] == int(transaction_id) and t.get("type", "expense") == transaction_type)
 
@@ -49,15 +57,24 @@ class TransactionUI:
         self.display.show_edit_menu(transaction, transaction_type)
         detail_choice = input("Which detail would you like to edit? (1-5): ")
 
+        # Check if the user wants to go back
         if detail_choice == "5":
             return "manage_transactions"
 
+        # Input validation
         if not detail_choice.isdigit() or int(detail_choice) < 1 or int(detail_choice) > 5:
             print("Invalid choice. Please try again.")
-            time.sleep(1)
+            time.sleep(IDLE_TIME)
             return self.edit_transaction_ui(transaction_type)
 
+
         updated_values = self._get_updated_values(detail_choice, transaction)
+
+        # Check if the user wants to cancel the operation
+        if updated_values is None:
+            self.display.clear()
+            return self.edit_transaction_ui(transaction_type)
+
         update_transaction(transaction_id, **updated_values)
 
         print(f"\n{transaction_type.capitalize()} updated successfully!")
@@ -107,7 +124,7 @@ class TransactionUI:
 
         delete_transaction(transaction_id)
         print(f"\n{transaction_type.capitalize()} deleted successfully!")
-        time.sleep(1)
+        time.sleep(IDLE_TIME)
         return "manage_transactions"
 
     def delete_all_transactions(self):
@@ -116,7 +133,7 @@ class TransactionUI:
         if confirm not in ["yes", "y"]:
             print("")
             print("Deletion cancelled.")
-            time.sleep(1)
+            time.sleep(IDLE_TIME)
             return "manage_transactions"
 
         print("")
@@ -126,7 +143,7 @@ class TransactionUI:
         if absolute_confirm not in ["yes", "y"]:
             print("")
             print("Deletion cancelled.")
-            time.sleep(1)
+            time.sleep(IDLE_TIME)
             return "manage_transactions"
 
         print("")
@@ -136,7 +153,7 @@ class TransactionUI:
         delete_all_transactions()
         print("")
         print("All transactions have been deleted.")
-        time.sleep(1)
+        time.sleep(IDLE_TIME)
 
         return "manage_transactions"
 
@@ -144,7 +161,8 @@ class TransactionUI:
         """Validate transaction ID input."""
         if not transaction_id.isdigit():
             print("Invalid ID. Please try again.")
-            time.sleep(1)
+            time.sleep(IDLE_TIME)
+            self.display.clear()
             return False
 
         transaction_exists = any(t["id"] == int(transaction_id) and
@@ -153,10 +171,36 @@ class TransactionUI:
 
         if not transaction_exists:
             print(f"{transaction_type.capitalize()} transaction not found. Please try again.")
-            time.sleep(1)
+            time.sleep(IDLE_TIME)
+            self.display.clear()
             return False
 
         return True
+
+    def _validate_expense_amount(self):
+        """Validate expense amount input."""
+        amount = input('Enter the amount (or type \"cancel\" to go back): $')
+
+        if amount.lower() == "cancel":
+            return None
+
+        # Remove any whitespace
+        amount = amount.strip()
+
+        # Check if amount if empty
+        if not amount:
+            print("Amount cannot be empty. Please try again.")
+            time.sleep(IDLE_TIME)
+            return self._validate_expense_amount()
+
+        # Check if amount is a valid number
+        if not amount.replace(".", "", 1).isdigit():
+            print("Invalid amount. Please try again.")
+            time.sleep(IDLE_TIME)
+            return self._validate_expense_amount()
+
+        # Convert to float and format to 2 decimal places
+        return f"{float(amount):.2f}"
 
     def _get_updated_values(self, detail_choice, transaction):
         """Get updated values for transaction editing."""
@@ -168,13 +212,28 @@ class TransactionUI:
         }
 
         if detail_choice == "1":
-            values['amount'] = f"{float(input('Enter new amount: $')):.2f}"
+            amount_input = self._validate_expense_amount()
+            if amount_input is None:
+                return None
+            values['amount'] = f"{float(amount_input):.2f}"
+
         elif detail_choice == "2":
-            values['date'] = input("Enter new date (DD/MM/YYYY): ")
+            date_input = input("Enter new date (DD/MM/YYYY) or \"cancel\": ")
+            if date_input == "cancel":
+                return None
+            values['date'] = date_input
+
         elif detail_choice == "3":
-            values['category'] = input("Enter new category: ")
+            category_input = self._get_categories(transaction['type'])
+            if category_input == "cancel":
+                return None
+            values['category'] = category_input
+
         elif detail_choice == "4":
-            values['remarks'] = input("Enter new remark: ")
+            remark_input = input("Enter new remark (or \"cancel\" to go back): ")
+            if remark_input == "cancel":
+                return None
+            values['remarks'] = remark_input
 
         return values
 
@@ -183,7 +242,7 @@ class TransactionUI:
         confirm = input(f"\nAre you sure you want to delete this {transaction_type}? (yes/no): ").lower()
         if confirm not in ["yes", "y"]:
             print(f"\n{transaction_type.capitalize()} deletion cancelled.")
-            time.sleep(1)
+            time.sleep(IDLE_TIME)
             return False
         return True
 
@@ -193,12 +252,12 @@ class TransactionUI:
         for index, category in enumerate(categories, start=1):
             print(f"{index}. {category}")
 
-        category_choice = input(f"Choose a category (1-{len(categories)}): ")
+        category_choice = input(f"Choose a category (1-{len(categories)}) or \"cancel\" to go back: ")
 
         # Input validation
         if not category_choice.isdigit() or int(category_choice) < 1 or int(category_choice) > len(categories):
             print("Invalid choice. Please try again.")
-            time.sleep(1)
+            time.sleep(IDLE_TIME)
             return self._get_categories(transaction_type)
 
         return categories[int(category_choice) - 1]
