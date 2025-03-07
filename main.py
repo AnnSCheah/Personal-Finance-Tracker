@@ -96,6 +96,10 @@ class BudgetApp:
         """Delete a category."""
         return self.category_ui.delete_category_ui(transaction_type)
 
+    def view_category(self):
+        """View all categories"""
+        return self.category_ui.view_category_ui()
+
     def exit_app(self):
         """Exit the application."""
         self.display.clear()

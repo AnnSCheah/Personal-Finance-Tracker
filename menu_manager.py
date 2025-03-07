@@ -46,7 +46,8 @@ class MenuManager:
             "4": ("Edit Income Category", lambda:handlers.edit_category("income")),
             "5": ("Delete Expense Category", lambda:handlers.delete_category("expense")),
             "6": ("Delete Income Category", lambda:handlers.delete_category("income")),
-            "7": ("Go Back", handlers.main)
+            "7": ("View Categories", handlers.view_category),
+            "8": ("Go Back", handlers.main)
         })
 
     def display_menu(self, title, menu_items):
