@@ -131,6 +131,26 @@ class CategoryUI:
         input("\nPress Enter to continue...")
         return "manage_categories"
 
+    def view_category_ui(self):
+        """List out the categories for expense & income"""
+        expense_cat = self.categories["expense"]
+        income_cat = self.categories["income"]
+
+        self.display.clear()
+        print("Expense Categories")
+        print("----------------------")
+        for category in expense_cat:
+            print(f"- {category}")
+
+        print("")
+        print("Income Categories")
+        print("----------------------")
+        for category in income_cat:
+            print(f"- {category}")
+        print("")
+        input("\nPress Enter to continue...")
+        return "manage_categories"
+
     def _validate_category_index(self, category_list, category_index):
         # Check if input is empty
         if not category_index:
