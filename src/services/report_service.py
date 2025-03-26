@@ -1,6 +1,6 @@
 """Module for handling report generation and display in the budget tracking application."""
 
-from transactions import get_total, view_filtered_transactions
+from src.models.transaction import get_total, view_filtered_transactions
 
 def get_financial_summary():
     """Calculate and return financial summary data."""

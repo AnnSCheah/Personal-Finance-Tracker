@@ -1,12 +1,13 @@
 import json
 import os
 import time
-from settings import CATEGORIES_FILE, IDLE_TIME
+from src.utils.settings import CATEGORIES_FILE, IDLE_TIME
 
 class CategoryUI:
     def __init__(self, display_manager):
         self.display = display_manager
         self.CATEGORIES_FILE = CATEGORIES_FILE
+        print(f"File path: {self.CATEGORIES_FILE}")
         self._load_categories()
 
     def _load_categories(self):

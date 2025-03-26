@@ -1,9 +1,9 @@
 """Module for handling transaction-related UI operations."""
 
 import time
-from settings import IDLE_TIME
-from category_ui import CategoryUI
-from transactions import add_transaction, update_transaction, delete_transaction, load_transactions, delete_all_transactions
+from src.utils.settings import IDLE_TIME
+from src.ui.category_ui import CategoryUI
+from src.models.transaction import add_transaction, update_transaction, delete_transaction, load_transactions, delete_all_transactions
 
 class TransactionUI:
     def __init__(self, display_manager):

@@ -1,11 +1,11 @@
 """Command-line interface for the budget tracking application."""
 
-from menu_manager import MenuManager
-from display_manager import DisplayManager
-from transaction_ui import TransactionUI
-from category_ui import CategoryUI
-from reports import display_financial_summary
-from transactions import view_filtered_transactions
+from src.ui.menu_manager import MenuManager
+from src.ui.display_manager import DisplayManager
+from src.ui.transaction_ui import TransactionUI
+from src.ui.category_ui import CategoryUI
+from src.services.report_service import display_financial_summary
+from src.models.transaction import view_filtered_transactions
 
 class BudgetApp:
     def __init__(self):
